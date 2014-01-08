@@ -3,7 +3,7 @@
  * for libvp
  * Oliver Hinds <oph@bu.edu> 2005-04-12
  *
- * 
+ *
  *
  *****************************************************************************/
 
@@ -25,7 +25,7 @@ image *readDICOM(char* filename) {
     return NULL;
   }
 
-  /* read the dicom into an xmedcom IMAGE */ 
+  /* read the dicom into an xmedcom IMAGE */
   if(dicom_read(filename,&dicomImage,&numImages,1,0)) {
     return NULL;
   }
@@ -90,29 +90,29 @@ image *readJPEG(char* filename) {
   FILE* infile = fopen(filename, "rb");
   if (!infile) {
     return NULL;
-  } 
+  }
   else {
     dinfo.err = jpeg_std_error(&jerr);
     jpeg_create_decompress(&dinfo);
-    
+
     jpeg_stdio_src(&dinfo, infile);
     jpeg_read_header(&dinfo, TRUE);
     jpeg_start_decompress(&dinfo);
-    
+
     w = dinfo.output_width;
     h = dinfo.output_height;
     c = dinfo.output_components;
-    
+
     row = buf = (unsigned char*) malloc(w*h*c*sizeof(unsigned char));
     if(buf == NULL) return NULL;
 
     row_stride = dinfo.output_width * dinfo.output_components;
-    
+
     /* rgb comps (jpeg) */
-    
-    pixels = (*dinfo.mem->alloc_sarray) ((j_common_ptr) &dinfo, 
+
+    pixels = (*dinfo.mem->alloc_sarray) ((j_common_ptr) &dinfo,
 					 JPOOL_IMAGE, row_stride, 1);
-    
+
     while(dinfo.output_scanline < dinfo.output_height) {
       jpeg_read_scanlines(&dinfo, pixels, 1);
       for(i=0; i<row_stride; i++) {
@@ -126,14 +126,14 @@ image *readJPEG(char* filename) {
   }
 
   img = createImage(w,h,c);
-  if(img == NULL) return NULL;  
+  if(img == NULL) return NULL;
 
   /* convert to 16 bit */
   bitDepthConvert8to16(buf,img->pixels,w*h*c);
   free(buf);
 
   return img;
-} 
+}
 
 /**
  * write an image struct to a jpeg image file
@@ -194,7 +194,7 @@ int writeJPEG(image *img, char *filename) {
   free(buf);
 
   return VP_SUCCESS;
-} 
+}
 
 /**
  * read a tiff image by name
@@ -232,7 +232,7 @@ image *readTIFF(char* filename) {
 //    TIFFError(name, emsg);
 //    return NULL;
 //  }
-//  
+//
 //  /* reverse from abgr to rgb */
 //  int i;
 //  im = createImage(img.width,img.height,3);
@@ -240,7 +240,7 @@ image *readTIFF(char* filename) {
 //    register unsigned char *cp = (unsigned char *) &raster[i];
 //
 //    im.pixels[i][0] = (unsigned short) cp[0];
-//    
+//
 //    t = cp[3];
 //    cp[3] = cp[0];
 //    cp[0] = t;
@@ -272,13 +272,13 @@ image *readPNM(char *filename) {
 }
 
 /**
- * save a 8 bit per pixel pNm image from a pixel array 
+ * save a 8 bit per pixel pNm image from a pixel array
  * numChannels can be 3 for color, 1 for greyscale
  * binary should be TRUE to write the image in binary format, FALSE for ASCII
  * return SUCCESS or FAILURE
  */
 int writePNM(image *img, char *filename, int binary) {
-  int i, x, y, c, counter = 0, siz;
+  int i, x, y, c, counter = 0;
 
   /* validate the image */
   if(img->pixels == NULL) return VP_FAILURE;
@@ -290,7 +290,6 @@ int writePNM(image *img, char *filename, int binary) {
     return VP_FAILURE;
   }
 
-  siz = img->numChannels*img->width*img->height;  
   /* write the image based on whether its binary or not */
   if(binary) {
 
@@ -306,7 +305,7 @@ int writePNM(image *img, char *filename, int binary) {
 	      img->numChannels);
       return VP_FAILURE;
     }
-    
+
     fprintf(fp,"%d %d\n", img->width, img->height);
 
     switch(img->type) {
@@ -316,7 +315,7 @@ int writePNM(image *img, char *filename, int binary) {
 
       /* reopen the file for binary writing */
       fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned char), 
+      fwrite(img->pixels, sizeof(unsigned char),
 	     img->numChannels*img->width*img->height, fp);
       break;
     case SHORT:
@@ -325,7 +324,7 @@ int writePNM(image *img, char *filename, int binary) {
 
       /* reopen the file for binary writing */
       fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned short), 
+      fwrite(img->pixels, sizeof(unsigned short),
 	     img->numChannels*img->width*img->height, fp);
       break;
     case INT:
@@ -335,7 +334,7 @@ int writePNM(image *img, char *filename, int binary) {
 
       /* reopen the file for binary writing */
       fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned int), 
+      fwrite(img->pixels, sizeof(unsigned int),
 	     img->numChannels*img->width*img->height, fp);
       break;
     default:
@@ -410,7 +409,7 @@ image *readDAT(char* filename) {
     fprintf(stderr,"error: could not open file %s for reading.\n", filename);
     return NULL;
   }
-  
+
   fread(&w, sizeof(unsigned int), 1, fp);
   fread(&h, sizeof(unsigned int), 1, fp);
   fread(&c, sizeof(unsigned int), 1, fp);

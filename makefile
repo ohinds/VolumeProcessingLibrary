@@ -25,7 +25,7 @@ export STRIP = 1
 export PROF = 0
 export MEMLEAK = 0
 
-# directories 
+# directories
 export LIB_DEST_DIR = /usr/local/lib/
 export HDR_DEST_DIR = /usr/local/include/
 export LIB_DIR = /tmp/
@@ -91,9 +91,9 @@ ifeq ($(OS),linux)
 	export fPIC = -fPIC
 endif
 
-export CINCL =  -I$(SRC_DIR) -I$(SRC_DIR)/ljpg -I$(SRC_DIR)/dicom 
-export CFLAGS = $(fPIC) -Werror -Wall $(MEMLEAK_FLAG) $(PROF_FLAG) $(JPEG_INCS) $(DEBUG_FLAG) $(OPTIM_FLAG) $(STRIP_FLAG) $(CINCL) $(ENDIAN_FLAG)
-export LDFLAGS = $(PROF_FLAG) $(JPEG_LIBS) 
+export CINCL =  -I$(SRC_DIR) -I$(SRC_DIR)/ljpg -I$(SRC_DIR)/dicom
+export CFLAGS = $(fPIC) -Werror -Wall -Wno-unused-result $(MEMLEAK_FLAG) $(PROF_FLAG) $(JPEG_INCS) $(DEBUG_FLAG) $(OPTIM_FLAG) $(STRIP_FLAG) $(CINCL) $(ENDIAN_FLAG)
+export LDFLAGS = $(PROF_FLAG) $(JPEG_LIBS)
 
 # differences between mac and *nix
 ifeq ($(OS),mac)
@@ -119,23 +119,23 @@ endif
 
 # suffix rule for subsidiary source files
 # (see http://www.gnu.org/manual/make/html_chapter/make_10.html#SEC111)
-$(OBJ_DIR)/%.o: %.c %.h 
+$(OBJ_DIR)/%.o: %.c %.h
 	@$(ECHO) '[make: building $@]'
-	$(CC) $(CFLAGS) -o $@ -c $< 
+	$(CC) $(CFLAGS) -o $@ -c $<
 
 HDR_FILES = $(wildcard *.h)
 SRC_FILES = $(wildcard ./*.c)
 TMP_FILES = $(patsubst ./%,$(OBJ_DIR)/%,$(SRC_FILES))
-OBJ_FILES = $(TMP_FILES:.c=.o) 
+OBJ_FILES = $(TMP_FILES:.c=.o)
 
 default: $(PROJECT)
-debug:	 
+debug:
 	$(MAKE) DEBUG=1 OPTIM=0 STRIP=0 $(PROJECT)
 $(PROJECT): $(OBJ_FILES)
 	@$(ECHO) 'make: building lib$@ for $(OS)...'
 	cd $(SRC_DIR) && $(MAKE)
 ifeq ($(LIB_TYPE),shared)
-	$(CC)  -shared  -Wl,-soname,$(PROJECT).so.$(MAJOR_VER) $(OBJ_DIR)/*.o -o $(LIB_DIR)/$(PROJECT).so.$(MAJOR_VER).$(MINOR_VER).$(RELEASE_VER) $(LDFLAGS) 
+	$(CC)  -shared  -Wl,-soname,$(PROJECT).so.$(MAJOR_VER) $(OBJ_DIR)/*.o -o $(LIB_DIR)/$(PROJECT).so.$(MAJOR_VER).$(MINOR_VER).$(RELEASE_VER) $(LDFLAGS)
 	@$(ECHO) '############################################'
 	@$(ECHO) 'make: built [$@.so.$(MAJOR_VER).$(MINOR_VER).$(RELEASE_VER)] successfully!'
 	@$(ECHO) '############################################'
@@ -187,4 +187,4 @@ clean:
 ### mode: makefile
 ### fill-column: 76
 ### comment-column: 0
-### End: 
+### End:

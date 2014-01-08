@@ -131,7 +131,7 @@ volume *loadVolumeFromImages(char **filenames, int numImages, int format) {
 int readMGHHeader(FILE* fp, volume **headerVol) {
   volume *vol;
   unsigned short rasGoodFlag;
-  unsigned int v,rows,cols,slices,frames,numVox,dof,type;
+  unsigned int v,rows,cols,slices,frames,dof,type;
   float Pxyz_c[3], Pxyz_0[3], Pcrs_c[3], Ds[3][3],
     tmpProd3by3[3][3], tmpProd3by1[3], Mdc[3][3];
 
@@ -176,9 +176,6 @@ int readMGHHeader(FILE* fp, volume **headerVol) {
   if(VP_DEBUG) {
     fprintf(stderr,"rasGoodFlag=%d\n",rasGoodFlag);
   }
-
-  /* assign the total number of voxels */
-  numVox = vol->size[FRAME]*vol->size[ROW]*vol->size[COL]*vol->size[SLICE];
 
   if(rasGoodFlag) { /* read the rest of the header */
     /* read diagonal entries of D and zero the rest */
@@ -657,7 +654,7 @@ volume *loadNiftiVolume(char *filename) {
 //    return NULL;
 //  }
 //
-  // create a volume of the appropriate size (only support 4d images here) 
+  // create a volume of the appropriate size (only support 4d images here)
   //  vol = createVolume(nii->nt,nii->nx,nii->ny,nii->nz,1,1);
 
 //  // convert to our datatype
@@ -708,4 +705,3 @@ void copyPixels(volume* vol, image *img, int sliceIndex) {
  * comment-column: 0
  * End:
  ********************************************************************/
-

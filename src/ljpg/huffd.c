@@ -43,7 +43,7 @@ int inputBufferOffset = 0;        /* Offset of current byte */
  * FillBitBuffer.
  * On most machines MIN_GET_BITS should be 25 to allow the full 32-bit width
  * of getBuffer to be used.  (On machines with wider words, an even larger
- * buffer could be used.)  
+ * buffer could be used.)
  */
 
 #define BITS_PER_LONG (8*sizeof(long))
@@ -134,7 +134,7 @@ static int bmask[] = {0x0000,
  *      One row of pixels are write to file pointed by outFile.
  *
  *--------------------------------------------------------------
- */   
+ */
 
 
 void PmPutRow24(MCU *RowBuf, int numCol, unsigned char **image)
@@ -151,30 +151,30 @@ void PmPutRow24(MCU *RowBuf, int numCol, unsigned char **image)
     }
 }
 
-                                   
+
 void PmPutRow16(MCU *RowBuf, int numCol, unsigned short **image)
-{  
-        register int col;          
+{
+        register int col;
 
         for (col = 0; col < numCol; col++)
-    {                   
+    {
              **image = (unsigned short) RowBuf[col][0];
-             (*image)++;                                        
+             (*image)++;
     }
-}   
+}
 
 
 void PmPutRow8(MCU *RowBuf, int numCol, unsigned char **image)
-{  
-        register int col;          
+{
+        register int col;
 
         for (col = 0; col < numCol; col++)
-    {                   
+    {
              **image = (unsigned char) RowBuf[col][0];
-             (*image)++;                                        
-    }   
-}   
-                                                                           
+             (*image)++;
+    }
+}
+
 
 
 
@@ -293,7 +293,7 @@ void HuffDecoderInit (DecompressInfo *dcPtr)
         /*
          * Make sure requested tables are present
          */
-        if (dcPtr->dcHuffTblPtrs[compptr->dcTblNo] == NULL) { 
+        if (dcPtr->dcHuffTblPtrs[compptr->dcTblNo] == NULL) {
             fprintf (stderr, "Error: Use of undefined Huffman table\n");
             /* exit (1); */
             dcPtr->error = -1; return;
@@ -344,24 +344,24 @@ static void ProcessRestart(DecompressInfo *dcPtr)
     /*
      * Scan for next JPEG marker
      */
-    do 
+    do
         {
-                do 
+                do
                 {   /* skip any non-FF bytes */
                     nbytes++;
                     c = GetJpegChar();
-                } 
+                }
                 while (c != 0xFF);
-        
-                do 
+
+                do
                 {   /* skip any duplicate FFs */
                     /*
                      * we don't increment nbytes here since extra FFs are legal
                      */
                     c = GetJpegChar ();
-                } 
+                }
                 while (c == 0xFF);
-    } 
+    }
         while (c == 0); /* repeat if it was a stuffed FF/00 */
 
     if (c != (RST0 + dcPtr->nextRestartNum)) {
@@ -371,7 +371,7 @@ static void ProcessRestart(DecompressInfo *dcPtr)
          * Just bail out.
          */
         fprintf (stderr, "Error: Corrupt JPEG data.  Exiting...\n");
-        /* exit(-1); */ 
+        /* exit(-1); */
         dcPtr->error = -1; return;
     }
 
@@ -387,7 +387,7 @@ static void ProcessRestart(DecompressInfo *dcPtr)
  *
  * DecodeFirstRow --
  *
- *        Decode the first raster line of samples at the start of 
+ *        Decode the first raster line of samples at the start of
  *      the scan and at the beginning of each restart interval.
  *        This includes modifying the component value so the real
  *      value, not the difference is returned.
@@ -436,7 +436,7 @@ void DecodeFirstRow (DecompressInfo *dcPtr, MCU *curRowBuf)
            d = 0;
         }
 
-        /* 
+        /*
          * Add the predictor to the difference.
          */
         curRowBuf[0][curComp]=d+(1<<(Pr-Pt-1));
@@ -466,7 +466,7 @@ void DecodeFirstRow (DecompressInfo *dcPtr, MCU *curRowBuf)
                d = 0;
             }
 
-            /* 
+            /*
              * Add the predictor to the difference.
              */
             curRowBuf[col][curComp]=d+curRowBuf[col-1][curComp];
@@ -504,37 +504,36 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
     int predictor;
     int numCOL, numROW, compsInScan;
     MCU *prevRowBuf, *curRowBuf;
-    int imagewidth, Pt, psv;
+    int imagewidth, psv;
     unsigned short *image16tmp;
     unsigned char *image8tmp, *image24tmp;
-             
+
     numCOL      = imagewidth=dcPtr->imageWidth;
     numROW      = dcPtr->imageHeight;
     compsInScan = dcPtr->compsInScan;
-    Pt          = dcPtr->Pt;
     psv         = dcPtr->Ss;
     prevRowBuf  = mcuROW2;
     curRowBuf   = mcuROW1;
-  
-    if (depth == 8) 
+
+    if (depth == 8)
                 image8tmp  = (unsigned char  *) *image;
-    else if (depth == 16)            
-                image16tmp = (unsigned short *) *image;    
+    else if (depth == 16)
+                image16tmp = (unsigned short *) *image;
     else if (depth == 24)
                 image24tmp = (unsigned char  *) *image;
     else {
                 fprintf(stderr,"Unsupported image depth %d\n",depth);
                 dcPtr->error = -1; return;
-         } 
+         }
 
     /*
      * Decode the first row of image. Output the row and
      * turn this row into a previous row for later predictor
      * calculation.
-     */         
+     */
     row = 0;
     DecodeFirstRow (dcPtr, curRowBuf);
-    if (depth == 8) 
+    if (depth == 8)
                 PmPutRow8  (curRowBuf, numCOL, &image8tmp);
     else if (depth == 16)
                 PmPutRow16 (curRowBuf, numCOL, &image16tmp);
@@ -544,12 +543,12 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
     swap(MCU *, prevRowBuf, curRowBuf);
 
     /* optimal case : 8 bit image, one color component, no restartInRows */
-    if ((depth == 8) && (compsInScan == 1) && (dcPtr->restartInRows == 0)) 
+    if ((depth == 8) && (compsInScan == 1) && (dcPtr->restartInRows == 0))
         {
 
       unsigned char        *curPixelPtr;
       int                 left,upper,diag;
-      
+
       /* initializations */
       curComp      = 0;
       ci           = dcPtr->MCUmembership[curComp];
@@ -557,7 +556,7 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
       dctbl        = dcPtr->dcHuffTblPtrs[compptr->dcTblNo];
       curPixelPtr  = image8tmp;
 
-      for (row=1; row<numROW; row++) 
+      for (row=1; row<numROW; row++)
           {
 
           /* Upper neighbor is predictor for the first column */
@@ -596,7 +595,7 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
               curPixelPtr++;
             }/*endfor col*/
           }/*endif*/
-          
+
           else {
             for (col=1; col < numCOL; col++) {
               /* Section F.2.2.1: decode the difference */
@@ -639,27 +638,27 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
               curPixelPtr++;
             }/*endfor col*/
           }/*endelse*/
-          
+
       }/*endfor row*/
     }/*endif fast case*/
-    
+
     else { /*normal case with 16 bits or color or ...*/
       for (row=1; row<numROW; row++) {
 
         /*
          * Account for restart interval, process restart marker if needed.
          */
-        if (dcPtr->restartInRows) 
+        if (dcPtr->restartInRows)
                 {
-           if (dcPtr->restartRowsToGo == 0) 
+           if (dcPtr->restartRowsToGo == 0)
                    {
               ProcessRestart (dcPtr); if (dcPtr->error) return;
-            
+
               /*
                * Reset predictors at restart.
                */
-              DecodeFirstRow(dcPtr,curRowBuf);       
-              if (depth == 8) 
+              DecodeFirstRow(dcPtr,curRowBuf);
+              if (depth == 8)
                         PmPutRow8  (curRowBuf, numCOL, &image8tmp);
               else if (depth == 16)
                         PmPutRow16 (curRowBuf, numCOL, &image16tmp);
@@ -674,13 +673,13 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
 
         /*
          * For the rest of the column on this row, predictor
-         * calculations are base on PSV. 
+         * calculations are base on PSV.
          */
-        
+
         /* several color components to decode (RGB colors)*/
 
         /* The upper neighbors are predictors for the first column. */
-        for (curComp = 0; curComp < compsInScan; curComp++) 
+        for (curComp = 0; curComp < compsInScan; curComp++)
                 {
             ci = dcPtr->MCUmembership[curComp];
             compptr = dcPtr->curCompInfo[ci];
@@ -701,10 +700,10 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
 
             curRowBuf[0][curComp]=d+prevRowBuf[0][curComp];
         }/*endfor curComp*/
-          
-        for (col=1; col < numCOL; col++) 
+
+        for (col=1; col < numCOL; col++)
                 {
-            for (curComp = 0; curComp < compsInScan; curComp++) 
+            for (curComp = 0; curComp < compsInScan; curComp++)
                         {
                 ci = dcPtr->MCUmembership[curComp];
                 compptr = dcPtr->curCompInfo[ci];
@@ -728,8 +727,8 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
                 curRowBuf[col][curComp]=d+predictor;
             }/*endfor curComp*/
         }/*endfor col*/
-        
-              if (depth == 8) 
+
+              if (depth == 8)
                         PmPutRow8  (curRowBuf, numCOL, &image8tmp);
               else if (depth == 16)
                         PmPutRow16 (curRowBuf, numCOL, &image16tmp);
@@ -737,7 +736,7 @@ void DecodeImage (DecompressInfo *dcPtr, unsigned short **image, int depth)
                         PmPutRow24 (curRowBuf, numCOL, &image24tmp);
 
               swap(MCU *, prevRowBuf, curRowBuf);
-      
+
       }/*endfor row*/
     }/*endelse*/
 }/*endofmethod DecodeImage*/
