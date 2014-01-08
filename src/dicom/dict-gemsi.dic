@@ -1,0 +1,59 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# filename: dict-gemsi.dic                                                    #
+#                                                                             #
+# DICOM DICT: Medical Image Conversion Utility                                #
+#                                                                             #
+# purpose   : dicom dictionary for XA files from GEMSI Innova 2000            #
+#                                                                             #
+# project   : (X)MedCon by Erik Nolf                                          #
+#                                                                             #
+# credits   : contributed by Paolo Marcheschi IFC-CNR Pisa (Italy).           #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# $Id: dict-gemsi.dic,v 1.1 2005/07/28 19:25:50 oph Exp $
+#
+(0015,0010)	LO	PrivateCreator			1	GEMSI
+(0015,0011)	LO	PrivateCreator			1	GEMSI
+(0015,1086)	IS	LastXaNumber			1	GEMSI
+(0015,1187)	IS	NumberOfImages			1	GEMSI
+(0015,118D)	IS	ItemLocked			1	GEMSI
+#
+(0019,0010)	LO	PrivateCreator			1	GEMSI
+(0019,0011)	LO	PrivateCreator			1	GEMSI
+(0019,0012)	LO	PrivateCreator			1	GEMSI
+(0019,104C)	CS	InternalLabel			1	GEMSI
+(0019,104D)	CS	BrowserHide			1	GEMSI
+(0019,1117)	IS	UserSpaFltStrgth		1	GEMSI
+(0019,1118)	IS	UserZoomFactor			1	GEMSI
+(0019,1124)	DS	LambdaCmPincushionDistortion	1	GEMSI
+(0019,1125)	DS	SlopeLvRegression		1	GEMSI
+(0019,1126)	DS	InterceptLvRegressio		1	GEMSI
+(0019,120B)	DS	FovDimDouble			2	GEMSI
+(0019,1230)	LO	ImageFileName			1	GEMSI
+(0019,1231)	IS	DefSpaFltFamily			1	GEMSI
+(0019,1232)	IS	DefSpaFltStrgth			1	GEMSI
+(0019,124E)	DS	DefBrightContr			2	GEMSI
+(0019,124F)	DS	UserBrightContr			2	GEMSI
+#
+(0025,0010)	DS	PivotAngle			1	GEMSI
+(0025,1002)	IS	FrameID				1	GEMSI
+(0025,1003)	DS	DistanceSourceToDetector	1	GEMSI
+(0025,1004)	DS	DistanceSourceToPatient		1	GEMSI
+(0025,1005)	DS	DistanceSourceToSkin		1	GEMSI
+(0025,1006)	DS	PositionerPrimaryAngle		1	GEMSI
+(0025,1007)	DS	PositionerSecondaryAngle	1	GEMSI
+(0025,1009)	DS	LarmAngle			1	GEMSI
+(0025,1010)	DS	PivotAngle1			1	GEMSI
+(0025,101A)	DS	ArcAngle			1	GEMSI
+(0025,101B)	DS	TableVertPos			1	GEMSI
+(0025,101F)	DS	KvpActual			1	GEMSI
+(0025,1020)	DS	XrayTubeCurrentActual		1	GEMSI
+(0025,1021)	DS	ExposureTimeActual		1	GEMSI
+(0025,1027)	DS	TgtEntrDosenGy			1	GEMSI
+(0025,1028)	DS	CnrCmdPercent			1	GEMSI
+(0025,1029)	DS	ContrastCmdLSB			1	GEMSI
+(0025,102A)	DS	EptActualCm			1	GEMSI
+(0025,102B)	IS	ZNumberSpectralFilter		1	GEMSI
+(0025,1030)	IS	FovDimension			2	GEMSI
+(0025,1033)	IS	FovOrigin			2	GEMSI
+#

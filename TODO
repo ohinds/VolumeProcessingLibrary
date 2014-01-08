@@ -1,0 +1,11 @@
+# todo for libvp
+
+* look into automatic image alignment algorithms
+
+* processing algorithms:
+adaptive histogram normalization 
+median filter
+
+* add dicom reading/writing 
+
+* try automatic segmentation

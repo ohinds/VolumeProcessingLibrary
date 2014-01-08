@@ -1,0 +1,18 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# filename: dict-vision.dic                                                   #
+#                                                                             #
+# DICOM DICT: Medical Image Conversion Utility                                #
+#                                                                             #
+# purpose   : dicom dictionary for Siemens Vision files                       #
+#                                                                             #
+# project   : (X)MedCon by Erik Nolf                                          #
+#                                                                             #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# $Id: dict-vision.dic,v 1.1 2005/07/28 19:25:50 oph Exp $
+#
+(0021,1120)	DS	FieldOfView			2	Si_vision
+(0021,1160)	DS	1stSliceImagePos		3	Si_vision
+(0021,1161)	DS	ImageNormal			3	Si_vision
+(0021,116a)	DS	ImageRow			3	Si_vision
+(0021,116b)	DS	ImageColumn			3	Si_vision
+#

@@ -1,0 +1,99 @@
+CVCNS Volume Processing Library (libvp) INSTALL
+
+Last Updated: $Date: 2006/09/28 23:41:58 $
+Latest Version: 0.15
+
+The Volume Processing Library (libvp) provides a set of routines for
+reading, writing, and manipulating image volumes gathered from MRI,
+PET, CT, serial section data, etc.
+
+This INSTALL describes how to install the libvp, with which it is
+distributed.
+
+
+__________________________________________________________________________
+
+
+The Volume Processing Library is a set of c functions designed
+to be compiled into a shared library. This library has been tested
+as part of c and c++ applications. 
+
+System and Dependencies
+
+The Volume Processing Library has been tested on Linux, mac and
+windows. On mac the fink environment (http://fink.sourceforge.net) is
+required. On windows the cygwin environment (http://cygwin.com) is
+required.
+
+Installation
+
+The makefile in the root directory of the distribution should do most
+of the installation work required. Edit the makefile to change any
+parameters specific to your system such as the install
+path. To build the library, type
+$ make OS=<os>
+where <os> is either linux, win, or mac
+on cygwin and mac you probably have to create /usr/local/include:
+$ mkdir /usr/local/include/
+then: 
+$ sudo make install
+
+This will copy and link the binaries, as well as install the header
+files.
+
+See the html documentation at doc/html/index.html 
+
+__________________________________________________________________________
+
+
+__________________________________________________________________________
+
+(3) SUPPORTED FILE TYPES
+
+Internal representation uses 16 bit per color channel
+voxels. Conversion is automatic on image load, so from 8 bit to 32 bit
+image loading is supported. 
+
+Formats:
+
+Currently Supported:
+--------------------
+JPEG
+PNM
+PGM
+MGH
+DICOM
+RAW
+RAWIV
+
+Support Planned:
+----------------
+TIFF
+HIPS
+
+See the html documentation at doc/html/index.html 
+
+__________________________________________________________________________
+
+
+__________________________________________________________________________
+
+(4) PROCESSING ALGORITHMS
+
+Currently Supported:
+--------------------
+Contrast adjustment
+Brightness adjustment
+
+Support Planned:
+----------------
+Adaptive histogram equalization
+Median filter
+Smoothing
+Some sort of automatic segmentation
+
+See the html documentation at doc/html/index.html 
+
+__________________________________________________________________________
+
+$Id: INSTALL,v 1.2 2006/09/28 23:41:58 oph Exp $

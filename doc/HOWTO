@@ -1,0 +1,89 @@
+CVCNS Volume Processing Library (libvp) HOWTO
+
+Last Updated: $Date: 2006/09/28 23:41:58 $
+Latest Version: 0.15
+
+The Volume Processing Library (libvp) provides a set of routines for
+reading, writing, and manipulating image volumes gathered from MRI,
+PET, CT, serial section data, etc.
+
+This HOWTO describes how to use the libvp, with which it is
+distributed.
+
+__________________________________________________________________________
+
+CONTENTS:
+
+ (1) INTRODUCTION
+
+ (2) SUPPORTED FILETYPES
+
+ (3) PROCESSING ALGORITHMS
+__________________________________________________________________________
+
+
+__________________________________________________________________________
+
+(1) INTRODUCTION
+
+This library was created to provide a unified framework for reading,
+writing and converting between the various imaging file formats, as
+well as to allow some basic processing algorithms to be performed on
+imaging volumes. This library is in a rudimentary state, with much
+functionality yet to be filled in. 
+
+Questions and comments can be directed to Oliver Hinds <oph@bu.edu>.
+__________________________________________________________________________
+
+
+__________________________________________________________________________
+
+(2) SUPPORTED FILE TYPES
+
+Internal representation uses 16 bit per color channel
+voxels. Conversion is automatic on image load, so from 8 bit to 32 bit
+image loading is supported. 
+
+Formats:
+
+Currently Supported:
+--------------------
+JPEG
+PNM
+PGM
+MGH
+DICOM
+RAW
+RAWIV
+
+Support Planned:
+----------------
+TIFF
+HIPS
+
+See the html documentation at doc/html/index.html 
+
+__________________________________________________________________________
+
+
+__________________________________________________________________________
+
+(3) PROCESSING ALGORITHMS
+
+Currently Supported:
+--------------------
+Contrast Adjustment
+Brightness Adjustment
+
+Support Planned:
+----------------
+Adaptive Histogram Equalization
+Median Filter
+Smoothing
+Automatic Segmentation
+
+See the html documentation at doc/html/index.html 
+
+__________________________________________________________________________
+
+$Id: HOWTO,v 1.1 2006/09/28 23:41:58 oph Exp $

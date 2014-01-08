@@ -1,0 +1,115 @@
+## Readme for the dicom io utils modified from the (x)medcon app,
+## which can be obtained from sourceforge at http://xmedcon.sourceforge.net
+##
+## Oliver Hinds <oph@bu.edu> 2005-07-28 
+
+This code is verbatum the (X)Medcon 0.9.8.5 dicom library source
+version.
+
+## ORIGINAL README IN THE libs/dicom DIRECTORY OF THE XMEDCON SOURCE DIR
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# filename: README                                                        #
+#                                                                         #
+# UTILITY text: Medical Image Conversion Utility                          #
+#                                                                         #
+# purpose     : the dicom 'you-should-read' file                          #
+#                                                                         #
+# project     : (X)MedCon by Erik Nolf                                    #
+#                                                                         #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# $Id: README,v 1.2 2005/07/29 12:42:18 oph Exp $
+
+(X)MedCon's DICOM library
+-------------------------
+
+This library code was originally contributed by 'Tony Voet'.
+
+Additional changes were made for use within the (X)MedCon project.
+
+Original version: libdicom 0.31 (1998)
+Adapted  version: 13-Oct-2002
+
+ - without jpeg-6a lib dependency
+ - use GNU's automake/autoconf/libtool (= libtools convenience library)
+ - prevent rescaling of pixel values
+ - using define MEDCON_INTEGRATED for a splitted library which: 
+      - enables  to set file stream from outside the lib
+      - disables closing of the file stream 
+ - changes to use original OFFIS DCMTK dicom.dic dictionary
+ - read GE implicit little endian except big endian pixels
+ - modular dictionaries, built during compilation process
+ - support for color through color reduction with external function
+ - unpacking of 12 bits allocated pixels 
+ - encapsulated pixeldata: rle, lossless jpeg
+
+License & Copyright notices:
+---------------------------
+
+1) VT-DICOM (C) 1998, Tony Voet. 
+
+        Read the file ./COPYING.LIB
+
+2) LossLess JPEG: see the "ljpg/README" file.
+
+3) dict-dicom.dic: dictionary borrowed from the OFFIS DCMTK Toolkit
+
+        see http://www.offis.uni-oldenburg.de
+
+/*
+ *  Copyright (C) 1994-2001, OFFIS
+ *
+ *  This software and supporting documentation were developed by
+ *
+ *    Kuratorium OFFIS e.V.
+ *    Healthcare Information and Communication Systems
+ *    Escherweg 2
+ *    D-26121 Oldenburg, Germany
+ *
+ *  THIS SOFTWARE IS MADE AVAILABLE,  AS IS,  AND OFFIS MAKES NO  WARRANTY
+ *  REGARDING  THE  SOFTWARE,  ITS  PERFORMANCE,  ITS  MERCHANTABILITY  OR
+ *  FITNESS FOR ANY PARTICULAR USE, FREEDOM FROM ANY COMPUTER DISEASES  OR
+ *  ITS CONFORMITY TO ANY SPECIFICATION. THE ENTIRE RISK AS TO QUALITY AND
+ *  PERFORMANCE OF THE SOFTWARE IS WITH THE USER.
+ *
+ *  Copyright of the software  and  supporting  documentation  is,  unless
+ *  otherwise stated, owned by OFFIS, and free access is hereby granted as
+ *  a license to  use  this  software,  copy  this  software  and  prepare
+ *  derivative works based upon this software.  However, any  distribution
+ *  of this software source code or supporting documentation or derivative
+ *  works  (source code and  supporting documentation)  must  include  the
+ *  three paragraphs of this copyright notice.
+ *
+ */
+
+
+Usage:
+-----
+
+This directory needs to be configured from within the (X)MedCon distribution 
+which will create the proper "Makefile". Building the library requires another
+two dictionary files:
+
+        - dictionary.SQ
+        - dictionary.data 
+
+Both are extracted from the source dictionary file "dicom.dic". The latter can
+be a mixture of the standard dicom dictionary "dict-dicom.dic" and any other
+user specified dictionaries. See also "DICTXTR" variable in the "Makefile".
+Any changes in the dictionaries requires the rebuilt of the above two files.
+This can also be done manually:
+
+     $> make rmdicts   (to remove both dictionary files)
+
+     $> make dodicts   (to make   both dictionary files) 
+
+Support on encapsulated LossLess JPEG pixeldata provided in 'ljpg' subdir.
+
+Notes:
+-----
+
+Any problems? enlf[at]users.sourceforge.net
+Where to get? http://sourceforge.net/projects/xmedcon
+
+Ofcourse, with special credits to Tony Voet (tony.voet[at]uzgent.be)
+
