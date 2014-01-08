@@ -1,9 +1,9 @@
 /*****************************************************************************
- * volumeUtil.h is the header file for the utility functions operating on 
+ * volumeUtil.h is the header file for the utility functions operating on
  * a volume struct for libvp
  * Oliver Hinds <oph@bu.edu> 2005-04-12
  *
- * 
+ *
  *
  *****************************************************************************/
 
@@ -23,16 +23,16 @@
 /**
  * create a volume struct
  */
-volume *createVolume(int frames, int rows, int cols, int slices, 
-		     int echos, int channels);
+volume *createVolume(int frames, int rows, int cols, int slices,
+                     int echos, int channels);
 
 /**
  * create a volume struct, but don't allocate the voxels
  * THIS SHOULD ONLY BE USED WHEN HEADER INFO IS BEING READ WITHOUT READING
- * VOXELS! 
+ * VOXELS!
  */
-volume *createEmptyVolume(int frames, int rows, int cols, int slices, 
-		     int echos, int channels);
+volume *createEmptyVolume(int frames, int rows, int cols, int slices,
+                          int echos, int channels);
 
 /**
  * create a volume struct from the header info of another volume
@@ -40,7 +40,7 @@ volume *createEmptyVolume(int frames, int rows, int cols, int slices,
 volume *createVolumeFrom(volume *otherVol);
 
 /**
- * free a volume 
+ * free a volume
  */
 void freeVolume(volume *vol);
 

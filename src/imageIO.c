@@ -51,11 +51,11 @@ image *readDICOM(char* filename) {
   /* copy the pixels */
   if(numChannels == 3) {
     bitDepthConvert8to16(dicomImage->data.rgb,img->pixels,
-			 dicomImage->w*dicomImage->h*numChannels);
+                         dicomImage->w*dicomImage->h*numChannels);
   }
   else {
     memcpy(img->pixels,dicomImage->data.gray,
-	   sizeof(unsigned short)*dicomImage->w*dicomImage->h);
+           sizeof(unsigned short)*dicomImage->w*dicomImage->h);
   }
 
   dicom_free(dicomImage,1);
@@ -111,12 +111,12 @@ image *readJPEG(char* filename) {
     /* rgb comps (jpeg) */
 
     pixels = (*dinfo.mem->alloc_sarray) ((j_common_ptr) &dinfo,
-					 JPOOL_IMAGE, row_stride, 1);
+                                         JPOOL_IMAGE, row_stride, 1);
 
     while(dinfo.output_scanline < dinfo.output_height) {
       jpeg_read_scanlines(&dinfo, pixels, 1);
       for(i=0; i<row_stride; i++) {
-	row[i] = pixels[0][i];
+        row[i] = pixels[0][i];
       }
       row+=row_stride;
     }
@@ -201,55 +201,55 @@ int writeJPEG(image *img, char *filename) {
  * return a pointer to an image struct
  */
 image *readTIFF(char* filename) {
-//  /*Using Sam Leffler's libtiff library */
-//  TIFFRGBAImage img;
-//  image *im;
-//  uint32 *raster;
-//
-//  size_t npixels;
-//  int imgwidth, imgheight, imgcomponents;
-//
-//  TIFF *tif;
-//  char emsg[1024];
-//
-//  tif = TIFFOpen(filename, "r");
-//  if (tif == NULL){
-//    fprintf(stderr, "tif == NULL\n");
-//    return NULL;
-//  }
-//  if (TIFFRGBAImageBegin(&img, tif, 0,emsg)){
-//    npixels = img.width*img.height;
-//    raster = (uint32 *)_TIFFmalloc(npixels*sizeof(uint32));
-//    if (raster != NULL){
-//      if (TIFFRGBAImageGet(&img, raster, img.width, img.height) == 0){
-//	TIFFError(name, emsg);
-//	exit(1);
-//      }
-//    }
-//    TIFFRGBAImageEnd(&img);
-//  }
-//  else {
-//    TIFFError(name, emsg);
-//    return NULL;
-//  }
-//
-//  /* reverse from abgr to rgb */
-//  int i;
-//  im = createImage(img.width,img.height,3);
-//  for (i = 0; i < npixels; i++) {
-//    register unsigned char *cp = (unsigned char *) &raster[i];
-//
-//    im.pixels[i][0] = (unsigned short) cp[0];
-//
-//    t = cp[3];
-//    cp[3] = cp[0];
-//    cp[0] = t;
-//    t = cp[2];
-//    cp[2] = cp[1];
-//    cp[1] = t;
-//  }
-//
-//  return im;
+  //  /*Using Sam Leffler's libtiff library */
+  //  TIFFRGBAImage img;
+  //  image *im;
+  //  uint32 *raster;
+  //
+  //  size_t npixels;
+  //  int imgwidth, imgheight, imgcomponents;
+  //
+  //  TIFF *tif;
+  //  char emsg[1024];
+  //
+  //  tif = TIFFOpen(filename, "r");
+  //  if (tif == NULL){
+  //    fprintf(stderr, "tif == NULL\n");
+  //    return NULL;
+  //  }
+  //  if (TIFFRGBAImageBegin(&img, tif, 0,emsg)){
+  //    npixels = img.width*img.height;
+  //    raster = (uint32 *)_TIFFmalloc(npixels*sizeof(uint32));
+  //    if (raster != NULL){
+  //      if (TIFFRGBAImageGet(&img, raster, img.width, img.height) == 0){
+  //  TIFFError(name, emsg);
+  //  exit(1);
+  //      }
+  //    }
+  //    TIFFRGBAImageEnd(&img);
+  //  }
+  //  else {
+  //    TIFFError(name, emsg);
+  //    return NULL;
+  //  }
+  //
+  //  /* reverse from abgr to rgb */
+  //  int i;
+  //  im = createImage(img.width,img.height,3);
+  //  for (i = 0; i < npixels; i++) {
+  //    register unsigned char *cp = (unsigned char *) &raster[i];
+  //
+  //    im.pixels[i][0] = (unsigned short) cp[0];
+  //
+  //    t = cp[3];
+  //    cp[3] = cp[0];
+  //    cp[0] = t;
+  //    t = cp[2];
+  //    cp[2] = cp[1];
+  //    cp[1] = t;
+  //  }
+  //
+  //  return im;
   notSupported();
   return NULL;
 }
@@ -302,45 +302,45 @@ int writePNM(image *img, char *filename, int binary) {
     }
     else {
       fprintf(stderr, "error: unsupported number of color channels=%d!\nsupported are 3 and 1.\n",
-	      img->numChannels);
+              img->numChannels);
       return VP_FAILURE;
     }
 
     fprintf(fp,"%d %d\n", img->width, img->height);
 
     switch(img->type) {
-    case UCHAR:
-      fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned char))-1);
-      fclose(fp);
+      case UCHAR:
+        fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned char))-1);
+        fclose(fp);
 
-      /* reopen the file for binary writing */
-      fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned char),
-	     img->numChannels*img->width*img->height, fp);
-      break;
-    case SHORT:
-      fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned short))-1);
-      fclose(fp);
+        /* reopen the file for binary writing */
+        fp = fopen(filename, "ab" );
+        fwrite(img->pixels, sizeof(unsigned char),
+               img->numChannels*img->width*img->height, fp);
+        break;
+      case SHORT:
+        fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned short))-1);
+        fclose(fp);
 
-      /* reopen the file for binary writing */
-      fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned short),
-	     img->numChannels*img->width*img->height, fp);
-      break;
-    case INT:
-    case LONG:
-      fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned int))-1);
-      fclose(fp);
+        /* reopen the file for binary writing */
+        fp = fopen(filename, "ab" );
+        fwrite(img->pixels, sizeof(unsigned short),
+               img->numChannels*img->width*img->height, fp);
+        break;
+      case INT:
+      case LONG:
+        fprintf(fp,"%d\n",(int)pow(2,8*sizeof(unsigned int))-1);
+        fclose(fp);
 
-      /* reopen the file for binary writing */
-      fp = fopen(filename, "ab" );
-      fwrite(img->pixels, sizeof(unsigned int),
-	     img->numChannels*img->width*img->height, fp);
-      break;
-    default:
-      fprintf(stderr,"writePNM error: unsupported image type\n");
-      return VP_FAILURE;
-      break;
+        /* reopen the file for binary writing */
+        fp = fopen(filename, "ab" );
+        fwrite(img->pixels, sizeof(unsigned int),
+               img->numChannels*img->width*img->height, fp);
+        break;
+      default:
+        fprintf(stderr,"writePNM error: unsupported image type\n");
+        return VP_FAILURE;
+        break;
     }
   }
   else { /* ascii */
@@ -353,38 +353,38 @@ int writePNM(image *img, char *filename, int binary) {
     }
     else {
       fprintf(stderr, "error: unsupported number of color channels=%d!\nsupported are 1 and 3.\n",
-	      img->numChannels);
+              img->numChannels);
       return VP_FAILURE;
     }
 
     fprintf(fp,"%d %d\n", img->width, img->height);
 
     switch(img->type) {
-    case UCHAR:
-      fprintf(fp,"%d\n",UCHAR_MAX);
-      break;
-    case SHORT:
-      fprintf(fp,"%d\n",USHRT_MAX);
-      break;
-    case INT:
-    case LONG:
-      fprintf(fp,"%d\n",INT_MAX);
-      break;
-    default:
-      fprintf(fp,"255\n");
-      break;
+      case UCHAR:
+        fprintf(fp,"%d\n",UCHAR_MAX);
+        break;
+      case SHORT:
+        fprintf(fp,"%d\n",USHRT_MAX);
+        break;
+      case INT:
+      case LONG:
+        fprintf(fp,"%d\n",INT_MAX);
+        break;
+      default:
+        fprintf(fp,"255\n");
+        break;
     }
 
     /* write the pixel info */
     for(y = img->height-1; y >= 0; y--) {
       for(x = 0; x < img->width; x++) {
-	i = (y*img->width + x) * img->numChannels;
-	for(c = 0; c < img->numChannels; c++) {
-	  fprintf(fp, " %3d", img->pixels[i+c]);
-	  counter++;
-	  if(counter % 5 == 0)
-	    fprintf(fp, "\n");
-	}
+        i = (y*img->width + x) * img->numChannels;
+        for(c = 0; c < img->numChannels; c++) {
+          fprintf(fp, " %3d", img->pixels[i+c]);
+          counter++;
+          if(counter % 5 == 0)
+            fprintf(fp, "\n");
+        }
       }
     }
   }

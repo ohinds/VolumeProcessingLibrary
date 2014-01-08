@@ -132,7 +132,7 @@ void takeEachNthElement(list *l, int n) {
   for(ln = getListNode(l,0); ln; ln = (listNode*) ln->next, counter++) {
     if(counter % n) {
       markForDeletion(ln);
-    }    
+    }
   }
   deleteMarkedNodes(l);
 }
@@ -320,17 +320,17 @@ void deleteMarkedNodes(list* l) {
   for(cur = getListNode(l,0); cur; cur = (listNode*) cur->next) {
     if(cur->delete == TRUE) {
       if(cur == l->head) { /* head is to be deleted */
-	l->head = (listNode*) cur->next;
+        l->head = (listNode*) cur->next;
       }
       else {
-	prev->next = cur->next;
+        prev->next = cur->next;
       }
       if(cur == l->tail) {
-	l->tail = prev;
+        l->tail = prev;
       }
 
       if(cur->data != NULL) {
-	free(cur->data);
+        free(cur->data);
       }
       free(cur);
 
@@ -486,7 +486,7 @@ listNode *insertHeapNode(list *h, double value, void *data) {
   /* allocate space for the node */
   listNode *a = (listNode*) malloc(sizeof(listNode));
   listNode *cur, *prev = NULL;
-  
+
   if(a) { /* successful allocation */
     /* assign members */
     a->data = data;
@@ -501,22 +501,22 @@ listNode *insertHeapNode(list *h, double value, void *data) {
       /* find where to insert the node */
       cur = h->head;
       while(cur != NULL && (h->type == MAXHEAP
-	    ? cur->value >= a->value : cur->value <= a->value)) {
-	prev = cur;
-	cur = (listNode*) cur->next;
+                            ? cur->value >= a->value : cur->value <= a->value)) {
+        prev = cur;
+        cur = (listNode*) cur->next;
       }
 
       /* special head case */
       if(cur == h->head) {
-	h->head = (listNode*) a;
+        h->head = (listNode*) a;
       }
       else {
-	prev->next = (struct listNode*) a;
+        prev->next = (struct listNode*) a;
       }
 
       /* special tail case */
       if(prev == h->tail) {
-	h->tail = (listNode*) a;
+        h->tail = (listNode*) a;
       }
 
       a->next = (struct listNode*) cur;
@@ -621,7 +621,7 @@ void checkList(list *l) {
   if(l->len > 0) {
     if(l->tail->next != NULL) {
       fprintf(stderr,"error: list %p has tail->next %p != NULL\n",
-	      l, l->tail->next);
+              l, l->tail->next);
     }
     assert(l->tail->next == NULL);
   }

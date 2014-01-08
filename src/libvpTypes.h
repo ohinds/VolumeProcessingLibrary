@@ -12,16 +12,16 @@
 #define VP_TYPES_VERSION_H "$Id: libvpTypes.h,v 1.17 2007/08/04 20:29:40 oph Exp $"
 
 #define VP_MAX_STR_LEN 255
-	
+
 #define VP_FAILURE -1
 #define VP_SUCCESS 1
-	
+
 #define VP_TRUE 1
 #define VP_FALSE 0
-	
+
 #define VP_PI 3.14159265358979
 #define VP_TOL 0.00000001
-	
+
 #define VP_MIN 0
 #define VP_MAX 1
 
@@ -30,7 +30,7 @@
 #include<zlib.h>
 
 /* endianness */
-enum ENDIANNES {LITTLE, BIG}; 
+enum ENDIANNES {LITTLE, BIG};
 
 /** byte reordering unions **/
 typedef union {
@@ -129,7 +129,7 @@ typedef struct {
   float flipangle; /* in degrees */
   float te;        /* in sec */
   float ti;        /* in sec */
-  float fov;       /* */    
+  float fov;       /* */
 } mriParameters;
 
 /* volume */
@@ -146,7 +146,7 @@ typedef struct {
   int actualBPP;
 
   /* filename */
-  char filename[VP_MAX_STR_LEN];  
+  char filename[VP_MAX_STR_LEN];
 
   /* world coordinate system transformation matrix */
   float vox2wrld[4][4]; /* see help load_mgh */
@@ -165,7 +165,7 @@ typedef struct {
   /* image processing vars */
   float brightnessAdjust;
   float contrastAdjust;
-  
+
 } volume;
 
 /** colors **/

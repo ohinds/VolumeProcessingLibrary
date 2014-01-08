@@ -2,7 +2,7 @@
  * ioUtil.h is the header file for input/output utility functions for libvp
  * Oliver Hinds <oph@bu.edu> 2005-06-02
  *
- * 
+ *
  *
  *****************************************************************************/
 
@@ -45,13 +45,13 @@ char *itoa(int i);
 
 /** file reading utils **/
 
-/** 
+/**
  * skip all white space
  */
 void skipWhite(FILE* f);
 
 /**
- * skips comments at the top of a file 
+ * skips comments at the top of a file
  */
 void skipComments(FILE* f, char symbol);
 
@@ -154,7 +154,7 @@ float swapByteOrder32f(float f);
 double swapByteOrder64f(double d);
 
 /**
- * convert a byte array into one 32 bit float number 
+ * convert a byte array into one 32 bit float number
  */
 float getFloat32FromBytes(unsigned char byteArray[8]);
 
@@ -167,8 +167,8 @@ double getDouble64FromBytes(unsigned char byteArray[8]);
  * looks for a valid image or volume type name in a string,
  * returns both the format and type (volume or image)
  */
-int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format, 
-			       enum INPUTTYPE *type);
+int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format,
+                               enum INPUTTYPE *type);
 
 #endif
 

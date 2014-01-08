@@ -3,7 +3,7 @@
  * for libvp
  * Oliver Hinds <oph@bu.edu> 2005-04-12
  *
- * 
+ *
  *
  *****************************************************************************/
 
@@ -44,12 +44,14 @@ int resizeImageBicubic(image *img, int newW, int newH);
 /**
  * bitDepthConvert a 32 bpp image to a 16 bpp image
  */
-void bitDepthConvert32to16(unsigned int *buf32, unsigned short *buf16, int numPix);
+void bitDepthConvert32to16(unsigned int *buf32, unsigned short *buf16,
+                           int numPix);
 
 /**
  * bitDepthConvert a 16 bpp image to a 12 bpp image
  */
-void bitDepthConvert16to32(unsigned short *buf16, unsigned int *buf32, int numPix);
+void bitDepthConvert16to32(unsigned short *buf16, unsigned int *buf32,
+                           int numPix);
 
 /**
  * bitDepthConvert a 32 bpp floating point image to a 16 bpp image
@@ -84,12 +86,14 @@ void bitDepthConvert8to32f(unsigned char *buf8, float *buf32, int numPix);
 /**
  * bitDepthConvert a 16 bpp image to a 8 bpp image
  */
-void bitDepthConvert16to8(unsigned short *buf16, unsigned char *buf8, int numPix);
+void bitDepthConvert16to8(unsigned short *buf16, unsigned char *buf8,
+                          int numPix);
 
 /**
  * bitDepthConvert a 8 bpp image to a 16 bpp image
  */
-void bitDepthConvert8to16(unsigned char *buf8, unsigned short *buf16, int numPix);
+void bitDepthConvert8to16(unsigned char *buf8, unsigned short *buf16,
+                          int numPix);
 
 
 /** whole image transformations **/
@@ -105,7 +109,7 @@ int changeImageBrightness(image *img, float adj);
 int changeImageContrast(image *img, float adj);
 
 /**
- * checks if two images are "compatible" 
+ * checks if two images are "compatible"
  */
 int imagesCompatible(image *img1, image *img2);
 
@@ -148,4 +152,3 @@ void flattenImage(image* img);
  * comment-column: 0
  * End:
  ********************************************************************/
-

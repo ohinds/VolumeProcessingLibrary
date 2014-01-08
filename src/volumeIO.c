@@ -16,21 +16,21 @@
  */
 volume *loadVolume(char *filename, int format) {
   switch(format) {
-  case MGH:
-    return loadMGHVolume(filename);
-    break;
-  case RAW:
-    return loadRAWVolume(filename);
-    break;
-  case RAWIV:
-    return loadRAWIVVolume(filename);
-    break;
-  case NIFTI:
-    return loadNiftiVolume(filename);
-    break;
-  default:
-    fprintf(stderr,"loadVolume(): unsupported format\n");
-    break;
+    case MGH:
+      return loadMGHVolume(filename);
+      break;
+    case RAW:
+      return loadRAWVolume(filename);
+      break;
+    case RAWIV:
+      return loadRAWIVVolume(filename);
+      break;
+    case NIFTI:
+      return loadNiftiVolume(filename);
+      break;
+    default:
+      fprintf(stderr,"loadVolume(): unsupported format\n");
+      break;
   }
 
   return NULL;
@@ -52,21 +52,21 @@ volume *loadVolumeFromImages(char **filenames, int numImages, int format) {
 
   /* load tyhe first slice to get width and height info */
   switch(format) {
-  case DICOM:
-    img = readDICOM(filenames[0]);
-    break;
-  case JPEG:
-    img = readJPEG(filenames[0]);
-    break;
-  case TIFF:
-    img = readTIFF(filenames[0]);
-    break;
-  case PNM:
-    img = readPNM(filenames[0]);
-    break;
-  default:
-    fprintf(stderr,"loadVolumeFromImages error: unsupported image format\n");
-    break;
+    case DICOM:
+      img = readDICOM(filenames[0]);
+      break;
+    case JPEG:
+      img = readJPEG(filenames[0]);
+      break;
+    case TIFF:
+      img = readTIFF(filenames[0]);
+      break;
+    case PNM:
+      img = readPNM(filenames[0]);
+      break;
+    default:
+      fprintf(stderr,"loadVolumeFromImages error: unsupported image format\n");
+      break;
   }
 
   /* validate */
@@ -94,27 +94,27 @@ volume *loadVolumeFromImages(char **filenames, int numImages, int format) {
 
     /* load a slice by calling the appropriate image load function */
     switch(format) {
-    case DICOM:
-      img = readDICOM(filenames[imInd]);
-      break;
-    case JPEG:
-      img = readJPEG(filenames[imInd]);
-      break;
-    case TIFF:
-      img = readTIFF(filenames[imInd]);
-      break;
-    case PNM:
-      img = readPNM(filenames[imInd]);
-      break;
-    default:
-      fprintf(stderr,"error: unsupported image format\n");
-      break;
+      case DICOM:
+        img = readDICOM(filenames[imInd]);
+        break;
+      case JPEG:
+        img = readJPEG(filenames[imInd]);
+        break;
+      case TIFF:
+        img = readTIFF(filenames[imInd]);
+        break;
+      case PNM:
+        img = readPNM(filenames[imInd]);
+        break;
+      default:
+        fprintf(stderr,"error: unsupported image format\n");
+        break;
     }
     if(img == NULL) continue;
 
     if(img->height != vol->size[ROW] || img->width != vol->size[COL]) {
       fprintf(stderr,"error: all images for a volume must be of the same dimensions.\nvol dim=<%d,%d>, img dim=<%d,%d>\n",
-	      vol->size[COL],vol->size[ROW],img->width,img->height);
+              vol->size[COL],vol->size[ROW],img->width,img->height);
       return NULL;
     }
 
@@ -133,7 +133,7 @@ int readMGHHeader(FILE* fp, volume **headerVol) {
   unsigned short rasGoodFlag;
   unsigned int v,rows,cols,slices,frames,dof,type;
   float Pxyz_c[3], Pxyz_0[3], Pcrs_c[3], Ds[3][3],
-    tmpProd3by3[3][3], tmpProd3by1[3], Mdc[3][3];
+      tmpProd3by3[3][3], tmpProd3by1[3], Mdc[3][3];
 
   int UNUSED_SPACE_SIZE= 256;
   int USED_SPACE_SIZE = (3*4+4*3*4);  /* space for raster transform */
@@ -163,9 +163,9 @@ int readMGHHeader(FILE* fp, volume **headerVol) {
 
   if(VP_DEBUG) {
     fprintf(stderr,
-	    "v=%d\nrows=%d\ncols=%d\nslices=%d\nframes=%d\ntype=%d\ndof=%d\n",
-	    v,vol->size[ROW],vol->size[COL],vol->size[SLICE],vol->size[FRAME],
-	    type,dof);
+            "v=%d\nrows=%d\ncols=%d\nslices=%d\nframes=%d\ntype=%d\ndof=%d\n",
+            v,vol->size[ROW],vol->size[COL],vol->size[SLICE],vol->size[FRAME],
+            type,dof);
   }
 
   vol->type = type;
@@ -238,15 +238,15 @@ int readMGHHeader(FILE* fp, volume **headerVol) {
 
     if(VP_DEBUG) {
       fprintf(stderr,"vox2wrld=\n%02.3f %02.3f %02.3f %02.3f\n%02.3f %02.3f %02.3f %02.3f \n%02.3f %02.3f %02.3f %02.3f \n%02.3f %02.3f %02.3f %02.3f\n",
-	      vol->vox2wrld[0][0], vol->vox2wrld[0][1],
-	      vol->vox2wrld[0][2], vol->vox2wrld[0][3],
-	      vol->vox2wrld[1][0], vol->vox2wrld[1][1],
-	      vol->vox2wrld[1][2], vol->vox2wrld[1][3],
-	      vol->vox2wrld[2][0], vol->vox2wrld[2][1],
-	      vol->vox2wrld[2][2], vol->vox2wrld[2][3],
-	      vol->vox2wrld[3][0], vol->vox2wrld[3][1],
-	      vol->vox2wrld[3][2], vol->vox2wrld[3][3]
-	      );
+              vol->vox2wrld[0][0], vol->vox2wrld[0][1],
+              vol->vox2wrld[0][2], vol->vox2wrld[0][3],
+              vol->vox2wrld[1][0], vol->vox2wrld[1][1],
+              vol->vox2wrld[1][2], vol->vox2wrld[1][3],
+              vol->vox2wrld[2][0], vol->vox2wrld[2][1],
+              vol->vox2wrld[2][2], vol->vox2wrld[2][3],
+              vol->vox2wrld[3][0], vol->vox2wrld[3][1],
+              vol->vox2wrld[3][2], vol->vox2wrld[3][3]
+              );
     }
   }
 
@@ -278,7 +278,7 @@ volume *loadMGHVolume(char *filename) {
   fp = fopen(filename,"r");
   if(fp == NULL) {
     fprintf(stderr,"error: could not open file %s for reading an MGH volume\n",
-	    filename);
+            filename);
     return NULL;
   }
 
@@ -348,7 +348,7 @@ int writeMGHVolume(volume *vol, char *filename) {
   fp = fopen(filename,"w");
   if(fp == NULL) {
     fprintf(stderr,"error: could not open file %s for writing an MGH volume\n",
-	    filename);
+            filename);
     return VP_FAILURE;
   }
 
@@ -373,16 +373,16 @@ int writeMGHVolume(volume *vol, char *filename) {
   memcpy(MdcD[2],vol->vox2wrld[2],4*3);
 
   delta[0] = sqrtf(MdcD[0][0]*MdcD[0][0]
-		 + MdcD[0][1]*MdcD[0][1]
-		 + MdcD[0][2]*MdcD[0][2]);
+                   + MdcD[0][1]*MdcD[0][1]
+                   + MdcD[0][2]*MdcD[0][2]);
 
   delta[1] = sqrtf(MdcD[1][0]*MdcD[1][0]
-		 + MdcD[1][1]*MdcD[1][1]
-		 + MdcD[1][2]*MdcD[1][2]);
+                   + MdcD[1][1]*MdcD[1][1]
+                   + MdcD[1][2]*MdcD[1][2]);
 
   delta[2] = sqrtf(MdcD[2][0]*MdcD[2][0]
-		 + MdcD[2][1]*MdcD[2][1]
-		 + MdcD[2][2]*MdcD[2][2]);
+                   + MdcD[2][1]*MdcD[2][1]
+                   + MdcD[2][2]*MdcD[2][2]);
 
   for(i = 0; i < 3; i++) {
     for(j = 0; j < 3; j++) {
@@ -456,7 +456,7 @@ volume *loadRAWVolume(char *filename) {
   fp = fopen(filename,"r");
   if(fp == NULL) {
     fprintf(stderr,"error: could not open file %s for reading an MGH volume\n",
-	    filename);
+            filename);
     return NULL;
   }
 
@@ -496,7 +496,7 @@ int writeRAWVolume(volume *vol, char *filename) {
   fp = fopen(filename,"w");
   if(fp == NULL) {
     fprintf(stderr,"error: could not open file %s for writing an MGH volume\n",
-	    filename);
+            filename);
     return VP_FAILURE;
   }
 
@@ -505,7 +505,7 @@ int writeRAWVolume(volume *vol, char *filename) {
 
   /* write voxels */
   writeBigEndianShort16(fp,vol->size[ROW]*vol->size[COL]*vol->size[SLICE],
-			vol->voxels);
+                        vol->voxels);
 
   fclose(fp);
 
@@ -528,7 +528,7 @@ volume *loadRAWIVVolume(char *filename) {
   fp = fopen(filename,"r");
   if(fp == NULL) {
     fprintf(stderr,"error: could not open file %s for reading an MGH volume\n",
-	    filename);
+            filename);
     return NULL;
   }
 
@@ -629,7 +629,7 @@ int writeRAWIVVolume(volume *vol, char *filename) {
 
   /* write voxels */
   writeBigEndianShort16(fp,vol->size[ROW]*vol->size[COL]*vol->size[SLICE],
-			vol->voxels);
+                        vol->voxels);
 
   fclose(fp);
 
@@ -643,36 +643,36 @@ int writeRAWIVVolume(volume *vol, char *filename) {
 volume *loadNiftiVolume(char *filename) {
   volume *vol = NULL;
 
-//  nifti_image *nii;
-//
-//  // load the image
-//  //  nii = nifti_image_read(filename, 1);
-//  if(nii == NULL) {
-//    fprintf(stderr,
-//	    "error: could not open file %s for reading a Nifti volume\n",
-//	    filename);
-//    return NULL;
-//  }
-//
+  //  nifti_image *nii;
+  //
+  //  // load the image
+  //  //  nii = nifti_image_read(filename, 1);
+  //  if(nii == NULL) {
+  //    fprintf(stderr,
+  //      "error: could not open file %s for reading a Nifti volume\n",
+  //      filename);
+  //    return NULL;
+  //  }
+  //
   // create a volume of the appropriate size (only support 4d images here)
   //  vol = createVolume(nii->nt,nii->nx,nii->ny,nii->nz,1,1);
 
-//  // convert to our datatype
-//  switch(nii->datatype) {
-//  case DT_UINT8:
-//    break;
-//  case DT_INT16:
-//    memcpy(vol->voxels, nii->data, nii->nbyper*nii->nvox);
-//    break;
-//  case DT_INT32:
-//    break;
-//  case DT_FLOAT32:
-//    break;
-//  case DT_COMPLEX64:
-//    break;
-//  case DT_FLOAT64:
-//    break;
-//  }
+  //  // convert to our datatype
+  //  switch(nii->datatype) {
+  //  case DT_UINT8:
+  //    break;
+  //  case DT_INT16:
+  //    memcpy(vol->voxels, nii->data, nii->nbyper*nii->nvox);
+  //    break;
+  //  case DT_INT32:
+  //    break;
+  //  case DT_FLOAT32:
+  //    break;
+  //  case DT_COMPLEX64:
+  //    break;
+  //  case DT_FLOAT64:
+  //    break;
+  //  }
 
 
   return vol;
@@ -692,9 +692,9 @@ void copyPixels(volume* vol, image *img, int sliceIndex) {
 
   /* copy pixels */
   memcpy(&vol->voxels[vol->size[ROW]*vol->size[COL]*vol->size[CHANNEL]
-		      *sliceIndex],
-	 img->pixels,
-	 img->width*img->height*img->numChannels*sizeof(unsigned short));
+                      *sliceIndex],
+         img->pixels,
+         img->width*img->height*img->numChannels*sizeof(unsigned short));
 }
 
 /********************************************************************

@@ -3,7 +3,7 @@
  * for libvp
  * Oliver Hinds <oph@bu.edu> 2005-04-12
  *
- * 
+ *
  *
  *****************************************************************************/
 
@@ -16,7 +16,7 @@
  */
 image *createImage(int width, int height, int numChannels) {
   image *img = (image*) malloc(sizeof(image));
-  
+
   /* validate allocation */
   if(img == NULL) return NULL;
 
@@ -31,18 +31,18 @@ image *createImage(int width, int height, int numChannels) {
   /* initial coordinate system info */
   img->pix2wrld[0][0] = img->pix2wrld[1][1] = img->pix2wrld[2][2] = 1.0f;
 
-  img->pix2wrld[0][1] = img->pix2wrld[0][2] = img->pix2wrld[0][3] 
-    = img->pix2wrld[1][0] = img->pix2wrld[1][2] = img->pix2wrld[1][3] 
-    = img->pix2wrld[2][0] = img->pix2wrld[2][1] = img->pix2wrld[2][3] 
-    = img->pix2wrld[3][0] = img->pix2wrld[3][1] = img->pix2wrld[3][2] 
-    = img->pix2wrld[3][3] = 0.0f;
+  img->pix2wrld[0][1] = img->pix2wrld[0][2] = img->pix2wrld[0][3]
+      = img->pix2wrld[1][0] = img->pix2wrld[1][2] = img->pix2wrld[1][3]
+      = img->pix2wrld[2][0] = img->pix2wrld[2][1] = img->pix2wrld[2][3]
+      = img->pix2wrld[3][0] = img->pix2wrld[3][1] = img->pix2wrld[3][2]
+      = img->pix2wrld[3][3] = 0.0f;
 
   /* allocate pixels */
   img->pixels = (unsigned short*) malloc(img->numChannels
-					 *img->width
-					 *img->height
-					 *sizeof(unsigned short));
-  
+                                         *img->width
+                                         *img->height
+                                         *sizeof(unsigned short));
+
   /* validate allocation */
   if(img->pixels == NULL) {
     img->width = 0;
@@ -106,29 +106,29 @@ int resizeImageBilinear(image *img, int newW, int newH) {
       bl = numC*(((m==img->height-1)?img->height-1:m+1)*img->width+n);
       ur = numC*(m*img->width+((n==img->width-1)?img->width-1:n+1));
       br = numC*(((m==img->height-1)?img->height-1:m+1)*img->width+((n==img->width-1)?img->width-1:n+1));
-		     
+
       pixInd = numC*(i*newW+j);
       /* get each component */
-      for(k = 0; k < numC; k++) {	
-	newPixels[pixInd+k] = img->pixels[ul+k] 
-	  + dx*(img->pixels[ur+k]-img->pixels[ul+k])
-	  + dy*(img->pixels[bl+k]-img->pixels[ul+k])
-	  + dx*dy*(img->pixels[br+k]+img->pixels[ul+k]
-		   -img->pixels[bl+k]-img->pixels[ur+k]);
+      for(k = 0; k < numC; k++) {
+        newPixels[pixInd+k] = img->pixels[ul+k]
+            + dx*(img->pixels[ur+k]-img->pixels[ul+k])
+            + dy*(img->pixels[bl+k]-img->pixels[ul+k])
+            + dx*dy*(img->pixels[br+k]+img->pixels[ul+k]
+                     -img->pixels[bl+k]-img->pixels[ur+k]);
       }
     }
   }
-  
+
   /* save the new pixels and dims */
   free(img->pixels);
   img->pixels = newPixels;
-  
+
   img->width = newW;
   img->height = newH;
 
   return VP_SUCCESS;
 }
- 
+
 #define P(x) ((x > 0) ? x : 0)
 /**
  * cubic spline weighting function
@@ -170,25 +170,25 @@ int resizeImageBicubic(image *img, int newW, int newH) {
       p = (int) floor(x);
       dx = x - p;
 
-      pixInd = numC*(i*newW+j);      
+      pixInd = numC*(i*newW+j);
       /* zero the color components */
       for(m = 0; m < numC; m++) {
-	newPixels[pixInd+m] = 0;
+        newPixels[pixInd+m] = 0;
       }
 
       /* iterate over the neigborhood */
       for(m = -1; m < 3; m++) {
-	localRow = (q+m < 0) ? 0 : ((q+m >= img->height) ? img->height-1 : q+m);
-	for(n = -1; n < 3; n++) {
-	  localCol = (p+n < 0) ? 0 : ((p+n >= img->width) ? img->width-1 : p+n);
+        localRow = (q+m < 0) ? 0 : ((q+m >= img->height) ? img->height-1 : q+m);
+        for(n = -1; n < 3; n++) {
+          localCol = (p+n < 0) ? 0 : ((p+n >= img->width) ? img->width-1 : p+n);
 
-	  oldPixInd = numC*(localRow*img->width+localCol);
-	  /* sum each color component */
-	  for(k = 0; k < numC; k++) {
-	    newPixels[pixInd+k] += cubicWeighting(m-dy) * cubicWeighting(n-dx) 
-	      * img->pixels[oldPixInd+k];
-	  }
-	}
+          oldPixInd = numC*(localRow*img->width+localCol);
+          /* sum each color component */
+          for(k = 0; k < numC; k++) {
+            newPixels[pixInd+k] += cubicWeighting(m-dy) * cubicWeighting(n-dx)
+                * img->pixels[oldPixInd+k];
+          }
+        }
       }
     }
   }
@@ -208,8 +208,8 @@ int resizeImageBicubic(image *img, int newW, int newH) {
 /**
  * bitDepthConvert a 32 bpp image to a 16 bpp image
  */
-void bitDepthConvert32to16(unsigned int *buf32, unsigned short *buf16, 
-			   int numPix) {
+void bitDepthConvert32to16(unsigned int *buf32, unsigned short *buf16,
+                           int numPix) {
   int pix;
   float ratio;
 
@@ -223,8 +223,8 @@ void bitDepthConvert32to16(unsigned int *buf32, unsigned short *buf16,
 /**
  * bitDepthConvert a 16 bpp image to a 12 bpp image
  */
-void bitDepthConvert16to32(unsigned short *buf16, unsigned int *buf32, 
-			   int numPix) {
+void bitDepthConvert16to32(unsigned short *buf16, unsigned int *buf32,
+                           int numPix) {
   int pix;
   float ratio;
 
@@ -238,8 +238,8 @@ void bitDepthConvert16to32(unsigned short *buf16, unsigned int *buf32,
 /**
  * bitDepthConvert a 32 bpp floating point image to a 16 bpp image
  */
-void bitDepthConvert32fto16(float *buf32, unsigned short *buf16, 
-			    int numPix) {
+void bitDepthConvert32fto16(float *buf32, unsigned short *buf16,
+                            int numPix) {
   int pix;
 
   /* iterate over each pixel, rescaling the values */
@@ -248,7 +248,7 @@ void bitDepthConvert32fto16(float *buf32, unsigned short *buf16,
       buf16[pix] = 0;
     }
     else {
-      buf16[pix] = (unsigned short) rintf(buf32[pix]);      
+      buf16[pix] = (unsigned short) rintf(buf32[pix]);
     }
   }
 }
@@ -256,8 +256,8 @@ void bitDepthConvert32fto16(float *buf32, unsigned short *buf16,
 /**
  * bitDepthConvert a 16 bpp image 32 bpp floating point image
  */
-void bitDepthConvert16to32f(unsigned short *buf16, float *buf32, 
-			    int numPix) {
+void bitDepthConvert16to32f(unsigned short *buf16, float *buf32,
+                            int numPix) {
   int pix;
 
   /* iterate over each pixel, rescaling the values */
@@ -269,8 +269,8 @@ void bitDepthConvert16to32f(unsigned short *buf16, float *buf32,
 /**
  * bitDepthConvert a 32 bpp image to a 8 bpp image
  */
-void bitDepthConvert32to8(unsigned int *buf32, unsigned char *buf8, 
-			  int numPix) {
+void bitDepthConvert32to8(unsigned int *buf32, unsigned char *buf8,
+                          int numPix) {
   int pix;
   float ratio;
 
@@ -284,8 +284,8 @@ void bitDepthConvert32to8(unsigned int *buf32, unsigned char *buf8,
 /**
  * bitDepthConvert a 8 bpp image to a 32 bpp image
  */
-void bitDepthConvert8to32(unsigned char *buf8, unsigned int *buf32, 
-			  int numPix) {
+void bitDepthConvert8to32(unsigned char *buf8, unsigned int *buf32,
+                          int numPix) {
   int pix;
   float ratio;
 
@@ -299,8 +299,8 @@ void bitDepthConvert8to32(unsigned char *buf8, unsigned int *buf32,
 /**
  * bitDepthConvert a 32 bpp floating point image to a 8 bpp image
  */
-void bitDepthConvert32fto8(float *buf32, unsigned char *buf8, 
-			   int numPix) {
+void bitDepthConvert32fto8(float *buf32, unsigned char *buf8,
+                           int numPix) {
   int pix;
 
   /* iterate over each pixel, rescaling the values */
@@ -312,8 +312,8 @@ void bitDepthConvert32fto8(float *buf32, unsigned char *buf8,
 /**
  * bitDepthConvert a 8 bpp image to a 32 bpp floating point image
  */
-void bitDepthConvert8to32f(unsigned char *buf8, float *buf32, 
-			   int numPix) {
+void bitDepthConvert8to32f(unsigned char *buf8, float *buf32,
+                           int numPix) {
   int pix;
 
   /* iterate over each pixel, rescaling the values */
@@ -325,8 +325,8 @@ void bitDepthConvert8to32f(unsigned char *buf8, float *buf32,
 /**
  * bitDepthConvert a 16 bpp image to a 8 bpp image
  */
-void bitDepthConvert16to8(unsigned short *buf16, unsigned char *buf8, 
-			  int numPix) {
+void bitDepthConvert16to8(unsigned short *buf16, unsigned char *buf8,
+                          int numPix) {
   int pix;
   float ratio;
 
@@ -340,8 +340,8 @@ void bitDepthConvert16to8(unsigned short *buf16, unsigned char *buf8,
 /**
  * bitDepthConvert a 8 bpp image to a 16 bpp image
  */
-void bitDepthConvert8to16(unsigned char *buf8, unsigned short *buf16, 
-			  int numPix) {
+void bitDepthConvert8to16(unsigned char *buf8, unsigned short *buf16,
+                          int numPix) {
   int pix;
   float ratio;
 
@@ -385,15 +385,15 @@ int changeImageContrast(image *img, float adj) {
 }
 
 /**
- * checks if two images are "compatible" 
+ * checks if two images are "compatible"
  */
 int imagesCompatible(image *img1, image *img2) {
 
-  return img1 != NULL && img2 != NULL 
-    && img1->height == img2->height 
-    && img1->width == img2->width
-    && img1->numChannels == img2->numChannels
-    && img1->type == img2->type;
+  return img1 != NULL && img2 != NULL
+      && img1->height == img2->height
+      && img1->width == img2->width
+      && img1->numChannels == img2->numChannels
+      && img1->type == img2->type;
 }
 
 /**
@@ -411,9 +411,9 @@ image *subtractImages(image *img1, image *img2) {
   // subtract
   subimg = createImage(img1->width, img1->height, img1->numChannels);
   for(i = 0; i < img1->height*img1->width*img1->numChannels; i++) {
-    subimg->pixels[i] =  
-      (img2->pixels[i] > img1->pixels[i]) ? 
-      img2->pixels[i]-img1->pixels[i] : img1->pixels[i]-img2->pixels[i];
+    subimg->pixels[i] =
+        (img2->pixels[i] > img1->pixels[i]) ?
+        img2->pixels[i]-img1->pixels[i] : img1->pixels[i]-img2->pixels[i];
   }
 
   return subimg;
@@ -426,11 +426,11 @@ image *subtractImages(image *img1, image *img2) {
  */
 void flipImage(image *img) {
   int row_ind, col_ind, nRows, nCols,
-    w = img->width, h = img->height, c = img->numChannels;
+      w = img->width, h = img->height, c = img->numChannels;
   unsigned short *imgbuf = img->pixels, *flip = NULL;
 
   /* check for proper bpp */
-  
+
 
   /* each row contains 'w' pixels with c color components each */
   nCols = w * c;
@@ -443,13 +443,13 @@ void flipImage(image *img) {
     for(col_ind = 0; col_ind < nCols; col_ind++) {
       /* copy each row to the its vertical complement */
       flip[row_ind*nCols + col_ind]
-	= imgbuf[(nRows-row_ind-1)*nCols + col_ind];
+          = imgbuf[(nRows-row_ind-1)*nCols + col_ind];
     }
   }
   free(imgbuf);
   img->pixels = flip;
 
-} 
+}
 
 /**
  * flattens an image by ignoring the alpha channel
@@ -493,14 +493,14 @@ void padImagePow2(image* img) {
   for(i = 0; i < newY; i++) {
     for(j = 0; j < newX; j++) {
       if(i < img->height && j < img->width) {
-	imgbuf[c*(newX*i+j)] = img->pixels[c*(img->width*i+j)];
-	imgbuf[c*(newX*i+j)+1] = img->pixels[c*(img->width*i+j)+1];
-	imgbuf[c*(newX*i+j)+2] = img->pixels[c*(img->width*i+j)+2];
+        imgbuf[c*(newX*i+j)] = img->pixels[c*(img->width*i+j)];
+        imgbuf[c*(newX*i+j)+1] = img->pixels[c*(img->width*i+j)+1];
+        imgbuf[c*(newX*i+j)+2] = img->pixels[c*(img->width*i+j)+2];
       }
       else {
-	imgbuf[c*(newX*i+j)] = 0;
-	imgbuf[c*(newX*i+j)+1] = 0;
-	imgbuf[c*(newX*i+j)+2] = 0;
+        imgbuf[c*(newX*i+j)] = 0;
+        imgbuf[c*(newX*i+j)+1] = 0;
+        imgbuf[c*(newX*i+j)+2] = 0;
       }
     }
   }
@@ -519,7 +519,7 @@ void trimImage(image* img, int pixAddX) {
   int i,j;
   int c = img->numChannels;
   unsigned short *imgbuf = (unsigned short*)
-    malloc(c*img->width*img->height*sizeof(unsigned short));
+      malloc(c*img->width*img->height*sizeof(unsigned short));
 
   for(i = 0; i < img->height; i++) {
     for(j = 0; j < img->width; j++) {
@@ -542,4 +542,3 @@ void trimImage(image* img, int pixAddX) {
  * comment-column: 0
  * End:
  ********************************************************************/
-

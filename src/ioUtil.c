@@ -14,28 +14,28 @@
  * open a file and return a vpFile descriptor, or NULL on failure
  */
 vpFile *vpOpen(const char *filename, const char *mode) {
-//  vpFile *vpf;
-//  FILE *fp;
-//
-//  /* validate */
-//  if(filename == NULL || mode == NULL) {
-//    return NULL;
-//  }
-//
-//  /* try to open */
-//  fp = fopen(filename,mode);
-//  if(fp == NULL) {
-//    return NULL;
-//  }
-//
-//  /* allocate the vpFile and assign fields */
-//  vpf = (vpFile*) malloc(sizeof(vpFile));
-//  vpf->fp = fp;
-//  vpf->zfp = gzdopen((int)fp,mode);
-//
-//  vpf->open = TRUE;
-//
-//  return vpf;
+  //  vpFile *vpf;
+  //  FILE *fp;
+  //
+  //  /* validate */
+  //  if(filename == NULL || mode == NULL) {
+  //    return NULL;
+  //  }
+  //
+  //  /* try to open */
+  //  fp = fopen(filename,mode);
+  //  if(fp == NULL) {
+  //    return NULL;
+  //  }
+  //
+  //  /* allocate the vpFile and assign fields */
+  //  vpf = (vpFile*) malloc(sizeof(vpFile));
+  //  vpf->fp = fp;
+  //  vpf->zfp = gzdopen((int)fp,mode);
+  //
+  //  vpf->open = TRUE;
+  //
+  //  return vpf;
   return NULL;
 }
 
@@ -43,11 +43,11 @@ vpFile *vpOpen(const char *filename, const char *mode) {
  * closes a vpFile descriptor
  */
 void vpClose(vpFile *vfp) {
-//  if(vfp != NULL && vfp->open) {
-//    fclose(vfp->fp);
-//    gzclose(vfp->zfp);
-//    vfp->open = FALSE;
-//  }
+  //  if(vfp != NULL && vfp->open) {
+  //    fclose(vfp->fp);
+  //    gzclose(vfp->zfp);
+  //    vfp->open = FALSE;
+  //  }
 }
 
 /**
@@ -167,99 +167,100 @@ int readVolumeVoxels(FILE* fp, volume *vol) {
     return VP_FAILURE;
   }
 
-  numVox = vol->size[FRAME]*vol->size[ROW]*vol->size[COL]*vol->size[SLICE]*vol->size[ECHO]*vol->size[CHANNEL];
+  numVox = vol->size[FRAME]*vol->size[ROW]*vol->size[COL]*
+      vol->size[SLICE]*vol->size[ECHO]*vol->size[CHANNEL];
   /* allocate space for the voxels and assign an actual bpp based on known
      types */
   switch(vol->type) {
-  case UCHAR:
-    buf1 = (unsigned char*) malloc(numVox*sizeof(unsigned char));
+    case UCHAR:
+      buf1 = (unsigned char*) malloc(numVox*sizeof(unsigned char));
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"reading %d unsigned char voxels...", numVox);
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"reading %d unsigned char voxels...", numVox);
+      }
 
-    /* forward to the start of the frame and read it */
-    fread(buf1, sizeof(unsigned char), numVox, fp);
+      /* forward to the start of the frame and read it */
+      fread(buf1, sizeof(unsigned char), numVox, fp);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\nconverting to 16 bit...");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\nconverting to 16 bit...");
+      }
 
-    bitDepthConvert8to16(buf1,vol->voxels,numVox);
+      bitDepthConvert8to16(buf1,vol->voxels,numVox);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\n");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\n");
+      }
 
-    free(buf1);
+      free(buf1);
 
-    vol->actualBPP = 8*sizeof(unsigned char);
-    break;
-  case SHORT:
-    if(VP_DEBUG) {
-      fprintf(stderr,"reading %d unsigned short voxels...", numVox);
-    }
+      vol->actualBPP = 8*sizeof(unsigned char);
+      break;
+    case SHORT:
+      if(VP_DEBUG) {
+        fprintf(stderr,"reading %d unsigned short voxels...", numVox);
+      }
 
-    /* forward to the start of the frame and read it */
-    readBigEndianShort16(fp, numVox, vol->voxels);
+      /* forward to the start of the frame and read it */
+      readBigEndianShort16(fp, numVox, vol->voxels);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\n");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\n");
+      }
 
-    vol->actualBPP = 8*sizeof(unsigned short);
-    break;
-  case INT:
-  case LONG:
-    buf4 = (unsigned int*) malloc(numVox*sizeof(unsigned int));
+      vol->actualBPP = 8*sizeof(unsigned short);
+      break;
+    case INT:
+    case LONG:
+      buf4 = (unsigned int*) malloc(numVox*sizeof(unsigned int));
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"reading %d unsigned int...", numVox);
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"reading %d unsigned int...", numVox);
+      }
 
-    /* forward to the start of the frame and read it */
-    readBigEndianInt32(fp, numVox, buf4);
+      /* forward to the start of the frame and read it */
+      readBigEndianInt32(fp, numVox, buf4);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\nconverting to 16 bit...");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\nconverting to 16 bit...");
+      }
 
-    bitDepthConvert32to16(buf4,vol->voxels,numVox);
+      bitDepthConvert32to16(buf4,vol->voxels,numVox);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\n");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\n");
+      }
 
-    free(buf4);
+      free(buf4);
 
-    vol->actualBPP = 8*sizeof(unsigned int);
-    break;
-  case FLOAT:
-    buf4f = (float*) malloc(numVox*sizeof(float));
+      vol->actualBPP = 8*sizeof(unsigned int);
+      break;
+    case FLOAT:
+      buf4f = (float*) malloc(numVox*sizeof(float));
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"reading %d float...", numVox);
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"reading %d float...", numVox);
+      }
 
-    /* forward to the start of the frame and read it */
-    readBigEndianFloat32(fp, numVox, buf4f);
+      /* forward to the start of the frame and read it */
+      readBigEndianFloat32(fp, numVox, buf4f);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\nconverting to 16 bit...");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\nconverting to 16 bit...");
+      }
 
-    bitDepthConvert32fto16(buf4f,vol->voxels,numVox);
+      bitDepthConvert32fto16(buf4f,vol->voxels,numVox);
 
-    if(VP_DEBUG) {
-      fprintf(stderr,"done.\n");
-    }
+      if(VP_DEBUG) {
+        fprintf(stderr,"done.\n");
+      }
 
-    free(buf4f);
+      free(buf4f);
 
-    vol->actualBPP = 8*sizeof(float);
-    break;
-  default:
-    break;
+      vol->actualBPP = 8*sizeof(float);
+      break;
+    default:
+      break;
   }
   vol->type = SHORT;
 
@@ -308,7 +309,7 @@ int readDataIntoShortBuffer(FILE *fp, int numElements, unsigned short *buf) {
 
   /* check the number of bytes left in the file */
   bytesLeft = getNumBytesLeftInFile(fp);
-  
+
   if(bytesLeft == 0 || bytesLeft < numElements) {
     if(VP_DEBUG) {
       printf("ioUtil.c: not enough bytes left to read\n");
@@ -319,7 +320,7 @@ int readDataIntoShortBuffer(FILE *fp, int numElements, unsigned short *buf) {
 
   /* compare the number of bytes left to the number we'd need to read in the
      data of each type */
-  if(numElements <= bytesLeft 
+  if(numElements <= bytesLeft
      && sizeof(unsigned short)*numElements > bytesLeft) { /* assume char */
     if(VP_DEBUG) {
       printf("ioUtil.c: assuming the type is bytes\n");
@@ -330,13 +331,13 @@ int readDataIntoShortBuffer(FILE *fp, int numElements, unsigned short *buf) {
     bitDepthConvert8to16(charBuf,buf,numElements);
     free(charBuf);
   }
-  else if(numElements <= sizeof(unsigned short)*bytesLeft 
-	  && sizeof(float)*numElements > bytesLeft) { /* assume short */
+  else if(numElements <= sizeof(unsigned short)*bytesLeft
+          && sizeof(float)*numElements > bytesLeft) { /* assume short */
     if(VP_DEBUG) {
       printf("ioUtil.c: assuming the type is shorts\n");
     }
 
-    readBigEndianShort16(fp, numElements, buf);    
+    readBigEndianShort16(fp, numElements, buf);
   }
   else if(numElements <= sizeof(float)*bytesLeft) { /* assume float */
     if(VP_DEBUG) {
@@ -350,7 +351,8 @@ int readDataIntoShortBuffer(FILE *fp, int numElements, unsigned short *buf) {
   }
   else {
     if(VP_DEBUG) {
-      printf("ioUtil.c: couldn't guess byte type with %d elements and %ld bytes left.\n", numElements, bytesLeft);
+      printf("ioUtil.c: couldn't guess byte type with %d elements and %ld bytes left.\n",
+             numElements, bytesLeft);
     }
 
     return VP_FAILURE;
@@ -389,7 +391,7 @@ int readBigEndianShort16(FILE *fp, int n, unsigned short *dest) {
  */
 int writeBigEndianShort16(FILE *fp, int n, unsigned short *src) {
   int i;
-  
+
   /* validate input */
   if(fp == NULL || src == NULL || n == 0) return VP_FAILURE;
 
@@ -429,8 +431,8 @@ int readBigEndianInt24(FILE *fp, int n, unsigned int *dest) {
     fread(&b2, sizeof(char), 1, fp);
     fread(&b3, sizeof(char), 1, fp);
     dest[i] = 0x00ffffff & ((0x00ff0000 & (b1<<16))
-			  | (0x0000ff00 & (b2<<8))
-			  | (0x000000ff & b3));
+                            | (0x0000ff00 & (b2<<8))
+                            | (0x000000ff & b3));
   }
 
   return VP_SUCCESS;
@@ -442,7 +444,7 @@ int readBigEndianInt24(FILE *fp, int n, unsigned int *dest) {
 int writeBigEndianInt24(FILE *fp, int n, unsigned int *src) {
   int i;
   char b1, b2, b3;
-  
+
   /* validate input */
   if(fp == NULL || src == NULL || n == 0) return VP_FAILURE;
 
@@ -488,7 +490,7 @@ int readBigEndianInt32(FILE *fp, int n, unsigned int *dest) {
  */
 int writeBigEndianInt32(FILE *fp, int n, unsigned int *src) {
   int i;
-  
+
   /* validate input */
   if(fp == NULL || src == NULL || n == 0) return VP_FAILURE;
 
@@ -541,7 +543,7 @@ int readBigEndianFloat32(FILE *fp, int n, float *dest) {
  */
 int writeBigEndianFloat32(FILE *fp, int n, float *src) {
   int i;
-  
+
   /* validate input */
   if(fp == NULL || src == NULL || n == 0) return VP_FAILURE;
 
@@ -583,7 +585,7 @@ int readBigEndianDouble64(FILE *fp, int n, double *dest) {
   }
 
   for(i = 0; i < n; i++) {
-    dest[i] = swapByteOrder64f(dest[i]); 
+    dest[i] = swapByteOrder64f(dest[i]);
   }
 
   return VP_SUCCESS;
@@ -594,7 +596,7 @@ int readBigEndianDouble64(FILE *fp, int n, double *dest) {
  */
 int writesBigEndianDouble64(FILE *fp, int n, double *src) {
   int i;
-  
+
   /* validate input */
   if(fp == NULL || src == NULL || n == 0) return VP_FAILURE;
 
@@ -629,8 +631,8 @@ unsigned short swapByteOrder16(unsigned short n) {
  * swap the byte order of a 32 bit int or long
  */
 unsigned int swapByteOrder32(unsigned int n) {
-   return (((n&0x000000FF)<<24)+((n&0x0000FF00)<<8)+((n&0x00FF0000)>>8)
-	   +((n&0xFF000000)>>24));
+  return (((n&0x000000FF)<<24)+((n&0x0000FF00)<<8)+((n&0x00FF0000)>>8)
+          +((n&0xFF000000)>>24));
 }
 
 /**
@@ -644,12 +646,12 @@ float swapByteOrder32f(float f) {
   fu.f = f;
   fu.s[0] = swapByteOrder16(fu.s[0]);
   fu.s[1] = swapByteOrder16(fu.s[1]);
-  
+
   /* now swap words */
   s = fu.s[0];
   fu.s[0] = fu.s[1];
   fu.s[1] = s;
-  
+
   return fu.f;
 }
 
@@ -704,8 +706,8 @@ double getDouble64FromBytes(unsigned char byteArray[8]) {
  * looks for a valid image or volume type name in a string,
  * returns both the format and type (volume or image)
  */
-int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format, 
-			       enum INPUTTYPE *type) {
+int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format,
+                               enum INPUTTYPE *type) {
   /* validate */
   if(str == NULL || str[0] == '\0') {
     *format = INVALID_FORMAT;
@@ -713,26 +715,26 @@ int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format,
     return VP_FAILURE;
   }
 
-  /* look for a valid type */  
+  /* look for a valid type */
   if(!strcmp(str,"jpeg") || !strcmp(str,"jpg") ||
      !strcmp(str,"JPEG") || !strcmp(str,"JPG")) {
     *type = VP_IMAGE;
     *format = JPEG;
   }
   else if(!strcmp(str,"pnm") || !strcmp(str,"PNM") ||
-	  !strcmp(str,"ppm") || !strcmp(str,"PPM")) {
+          !strcmp(str,"ppm") || !strcmp(str,"PPM")) {
     *type = VP_IMAGE;
     *format = PNM;
   }
   else if(!strcmp(str,"dicom") || !strcmp(str,"DICOM") ||
-	  !strcmp(str,"dcm") || !strcmp(str,"DCM")) {
+          !strcmp(str,"dcm") || !strcmp(str,"DCM")) {
     *type = VP_IMAGE;
     *format = DICOM;
   }
   else if(!strcmp(str,"dat") || !strcmp(str,"DAT")) {
     *type = VP_IMAGE;
     *format = DAT;
-  }  
+  }
   else if(!strcmp(str,"mgh") || !strcmp(str,"MGH")) {
     *type = VP_VOLUME;
     *format = MGH;
@@ -744,7 +746,7 @@ int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format,
   else if(!strcmp(str,"raw") || !strcmp(str,"RAW")) {
     *type = VP_VOLUME;
     *format = RAW;
-  }  
+  }
   else if(!strcmp(str,"rawiv") || !strcmp(str,"RAWIV")) {
     *type = VP_VOLUME;
     *format = RAWIV;
@@ -766,4 +768,3 @@ int getTypeAndFormatFromString(char *str, enum IMAGEFORMAT *format,
  * comment-column: 0
  * End:
  ********************************************************************/
-
